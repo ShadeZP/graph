@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
+import { UserDTO } from 'src/common/models/interfaces';
 import { JWT, User } from '../graphql.schema'
 
 @Injectable()
@@ -8,7 +9,7 @@ export class UsersService {
 
   constructor() {
     this.client = axios.create({
-      baseURL: 'http://localhost:3004/v1/users',
+      baseURL: process.env.USERS_URL,
     });
   }
 
@@ -21,8 +22,11 @@ export class UsersService {
   }
 
   async getUserById(id: string): Promise<User> {
-    const res = await this.client.get<User>(id)
+    const res = await this.client.get<UserDTO>(id)
 
-    return res.data;
+    return {
+      ...res.data,
+      id: res.data._id,
+    };
   }
 }

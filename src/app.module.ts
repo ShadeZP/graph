@@ -10,6 +10,7 @@ import { BandsModule } from './bands/bands.module';
 import { FavouritesModule } from './favourites/favourites.module';
 import { GenresModule } from './genres/genres.module';
 import { TracksModule } from './tracks/tracks.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -22,14 +23,11 @@ import { TracksModule } from './tracks/tracks.module';
         const token: string = req.headers.authorization || '';
 
         return {
-          config: {
-            headers: {
-              Authorization: token,
-            },
-          },
+          jwt: token,
         };
       },
     }),
+    ConfigModule.forRoot(),
     UsersModule,
     AlbumsModule,
     ArtistsModule,
