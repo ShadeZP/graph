@@ -1,13 +1,11 @@
 import { Args, Context, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { BandsService } from './bands.service';
 import { CreateBandInput, FilterBandsInput, UpdateBandInput } from '../graphql.schema'
-import { ArtistsService } from 'src/artists/artists.service';
 
 @Resolver('Bands')
 export class BandsResolver {
   constructor(
     private bandsService: BandsService,
-    private artistsService: ArtistsService,
   ) { }
 
   @Query('bands')

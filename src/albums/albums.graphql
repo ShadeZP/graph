@@ -1,10 +1,54 @@
+type Query {
+  album(id: ID!): Album
+  albums(limit: Int!, offset: Int!, filters: FilterAlbumsInput): AlbumsPagination
+}
+
+type Mutation{
+  createAlbum(createAlbumInput: CreateAlbumInput!): Album
+  updateAlbum(id: ID!, updateAlbumInput: UpdateAlbumInput!): Album
+  deleteAlbum(id: ID!): Delete
+}
+
 type Album {
     id: ID!
     name: String
+    released: String
+    artists: [Artist!]
+    bands: [Band!]
+    tracks: [Track!]
+    genres: [Genre!]
+    image: String
+}
+
+type AlbumsPagination {
+  items: [Album!]
+  offset: Int
+  limit: Int
+  total: Int
+}
+
+input CreateAlbumInput {
+    name: String!
     released: Int
-    artists: [Artist]
-    bands: [Band]
-    tracks: [Track]
-    genres: [Genre]
+    artistsIds: ID!
+    bandsIds: [ID!]
+    trackIds: [ID!]
+    genresIds: [ID!]
+    image: String
+}
+
+input UpdateAlbumInput {
+    name: String!
+    released: Int
+    artistsIds: [ID!]
+    bandsIds: [ID!]
+    trackIds: [ID!]
+    genresIds: [ID!]
+    image: String
+}
+
+input FilterAlbumsInput {
+    name: String!
+    released: String
     image: String
 }

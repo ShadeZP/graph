@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { updateEntity } from 'src/common/utils/updateEntity';
-import { Band, BandsPagination, CreateBandInput, UpdateBandInput } from 'src/graphql.schema';
+import { Band, BandsPagination, CreateBandInput, Delete, UpdateBandInput } from 'src/graphql.schema';
 import { createAuthHeader } from '../common/utils/createAuthHeader';
 import { FilterBandsInput } from '../graphql.schema';
 
@@ -45,14 +45,14 @@ export class BandsService {
     return res.data;
   }
 
-  async update(id: string, updateBandInput: UpdateBandInput, jwt: string) {
-    const res = await this.client.put(id, updateBandInput, createAuthHeader(jwt));
+  async update(id: string, updateBandInput: UpdateBandInput, jwt: string): Promise<Band> {
+    const res = await this.client.put<Band>(id, updateBandInput, createAuthHeader(jwt));
 
     return res.data;
   }
 
-  async delete(id: string, jwt: string) {
-    const res = await this.client.delete(`/${id}`, createAuthHeader(jwt));
+  async delete(id: string, jwt: string): Promise<Delete> {
+    const res = await this.client.delete<Delete>(`/${id}`, createAuthHeader(jwt));
 
     return res.data;
   }

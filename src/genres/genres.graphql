@@ -1,12 +1,12 @@
 type Query {
   genre(id: ID!): Genre
-  genres(limit: Int, offset: Int, filters: FilterGenresInput): GenresPagination
+  genres(limit: Int!, offset: Int!, filters: FilterGenresInput): GenresPagination
 }
 
 type Mutation{
-  createGenre(createGenreInput: CreateGenreInput): Genre
-  updateGenre(id: ID, updateGenreInput: UpdateGenreInput): Genre
-  deleteGenre(id: ID): Delete
+  createGenre(createGenreInput: CreateGenreInput!): Genre
+  updateGenre(id: ID!, updateGenreInput: UpdateGenreInput!): Genre
+  deleteGenre(id: ID!): Delete
 }
 
 type Genre {
@@ -18,7 +18,7 @@ type Genre {
 }
 
 type GenresPagination {
-  items: [Genre]
+  items: [Genre!]
   offset: Int
   limit: Int
   total: Int

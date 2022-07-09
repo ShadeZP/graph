@@ -1,10 +1,56 @@
+type Query {
+  track(id: ID!): Track
+  tracks(limit: Int!, offset: Int!, filters: FilterTracksInput): TracksPagination
+}
+
+type Mutation{
+  createTrack(createTrackInput: CreateTrackInput!): Track
+  updateTrack(id: ID!, updateTrackInput: UpdateTrackInput!): Track
+  deleteTrack(id: ID!): Delete
+}
+
 type Track {
     id: ID!
     title: String!
     album: Album
-    artists: [Artist]
-    bands: [Band]
+    artists: [Artist!]
+    bands: [Band!]
     duration: Int
     released: Int
-    genres: [Genre]
+    genres: [Genre!]
 }
+
+type TracksPagination {
+  items: [Track]
+  offset: Int
+  limit: Int
+  total: Int
+}
+
+input CreateTrackInput {
+    title: String!
+    albumId: String
+    bandsIds: [ID!]
+    artistsIds: [ID!]
+    duration: Int
+    released: Int
+    genresIds: [ID!]
+}
+
+input UpdateTrackInput {
+    title: String
+    albumId: String
+    bandsIds: [ID!]
+    artistsIds: [ID!]
+    duration: Int
+    released: Int
+    genresIds: [ID!]
+}
+
+input FilterTracksInput {
+    title: String
+    albumId: String
+    duration: Int
+    released: Int
+}
+

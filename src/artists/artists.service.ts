@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 import { createAuthHeader } from '../common/utils/createAuthHeader'
 import { updateEntity } from 'src/common/utils/updateEntity';
-import { Artist, ArtistsPagination, CreateArtistInput, FilterArtistsInput, UpdateArtistInput } from 'src/graphql.schema';
+import { Artist, ArtistsPagination, CreateArtistInput, Delete, FilterArtistsInput, UpdateArtistInput } from 'src/graphql.schema';
 
 @Injectable()
 export class ArtistsService {
@@ -50,8 +50,8 @@ export class ArtistsService {
     return res.data;
   }
 
-  async delete(id: string, jwt: string) {
-    const res = await this.client.delete(`/${id}`, createAuthHeader(jwt));
+  async delete(id: string, jwt: string): Promise<Delete> {
+    const res = await this.client.delete<Delete>(`/${id}`, createAuthHeader(jwt));
 
     return res.data;
   }

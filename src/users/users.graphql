@@ -30,10 +30,10 @@ input RegisterInput {
     lastName: String!
     password: String!
     email: String!
-    favouriteArtistIds: [ID]
-    favouriteSongsIds: [ID]
-    favouriteBandsIds: [ID]
-    favouriteGenresIds: [ID]
+    favouriteArtistIds: [ID!]
+    favouriteSongsIds: [ID!]
+    favouriteBandsIds: [ID!]
+    favouriteGenresIds: [ID!]
 }
 
 input LoginInput {

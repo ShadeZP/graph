@@ -70,7 +70,6 @@ export class ArtistsResolver {
   async bands(
     @Parent() artist
   ) {
-    console.log(artist)
     const { bands } = artist;
 
     const res = await Promise.all(bands.map((id) => {

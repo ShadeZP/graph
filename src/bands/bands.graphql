@@ -1,31 +1,31 @@
 type Query {
   band(id: ID!): Band
-  bands(limit: Int, offset: Int, filters: FilterBandsInput): BandsPagination
+  bands(limit: Int!, offset: Int!, filters: FilterBandsInput): BandsPagination
 }
 
 type Mutation{
-  createBand(createBandInput: CreateBandInput): Band
-  updateBand(id: ID, updateBandInput: UpdateBandInput): Band
-  deleteBand(id: ID): Delete
+  createBand(createBandInput: CreateBandInput!): Band
+  updateBand(id: ID!, updateBandInput: UpdateBandInput!): Band
+  deleteBand(id: ID!): Delete
 }
 
 type Band {
     id: ID!
     name: String
     origin: String
-    members: [Member]
+    members: [Member!]
     website: String
-    genres: [Genre]
+    genres: [Genre!]
 }
 
 type Member {
   artist: String
   instrument: String
-  years: [String]
+  years: [String!]
 }
 
 type BandsPagination {
-  items: [Band]
+  items: [Band!]
   offset: Int
   limit: Int
   total: Int
@@ -34,23 +34,23 @@ type BandsPagination {
 input UpdateMember {
   artist: String
   instrument: String
-  years: [String]
+  years: [String!]
 }
 
 input CreateBandInput {
     name: String!
     origin: String
-    members: [UpdateMember]
+    members: [UpdateMember!]
     website: String
-    genresIds: [ID]
+    genresIds: [ID!]
 }
 
 input UpdateBandInput {
     name: String
     origin: String
-    members: [UpdateMember]
+    members: [UpdateMember!]
     website: String
-    genresIds: [ID]
+    genresIds: [ID!]
 }
 
 input FilterBandsInput {

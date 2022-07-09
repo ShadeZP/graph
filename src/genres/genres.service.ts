@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { updateEntity } from 'src/common/utils/updateEntity';
 import { createAuthHeader } from '../common/utils/createAuthHeader';
-import { CreateGenreInput, FilterGenresInput, Genre, GenresPagination, UpdateGenreInput } from 'src/graphql.schema';
+import { CreateGenreInput, Delete, FilterGenresInput, Genre, GenresPagination, UpdateGenreInput } from 'src/graphql.schema';
 
 @Injectable()
 export class GenresService {
@@ -44,14 +44,14 @@ export class GenresService {
     return res.data;
   }
 
-  async update(id: string, updateGenreInput: UpdateGenreInput, jwt: string) {
-    const res = await this.client.put(id, updateGenreInput, createAuthHeader(jwt));
+  async update(id: string, updateGenreInput: UpdateGenreInput, jwt: string): Promise<Genre> {
+    const res = await this.client.put<Genre>(id, updateGenreInput, createAuthHeader(jwt));
 
     return res.data;
   }
 
-  async delete(id: string, jwt: string) {
-    const res = await this.client.delete(`/${id}`, createAuthHeader(jwt));
+  async delete(id: string, jwt: string): Promise<Delete> {
+    const res = await this.client.delete<Delete>(`/${id}`, createAuthHeader(jwt));
 
     return res.data;
   }

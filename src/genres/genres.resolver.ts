@@ -2,7 +2,7 @@ import { Args, Context, Mutation, Parent, Query, ResolveField, Resolver } from '
 import { CreateGenreInput, FilterGenresInput, UpdateGenreInput } from 'src/graphql.schema';
 import { GenresService } from './genres.service';
 
-@Resolver()
+@Resolver('Genre')
 export class GenresResolver {
   constructor(
     private genresService: GenresService,
