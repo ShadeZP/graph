@@ -11,7 +11,7 @@ export class UsersResolver {
     @Args('email') email: string,
     @Args('password') password: string,
   ) {
-    return this.usersService.login(email, password);
+    return this.usersService.login({ email, password });
   }
 
   @Query()

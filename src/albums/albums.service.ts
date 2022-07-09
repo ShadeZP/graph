@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
-import { AlbumDTO } from 'src/common/models/interfaces';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { createAuthHeader } from '../common/utils/createAuthHeader'
 import { updateEntity } from 'src/common/utils/updateEntity';
+import { Album } from 'src/graphql.schema';
 
 interface getAlbumsResponse {
-  items: AlbumDTO[],
+  items: Album[],
   offset: number,
   limit: number,
   total: number,
@@ -30,22 +30,23 @@ export class AlbumsService {
     this.client.interceptors.response.use((res) => {
       return updateEntity(res);
     });
+
+    this.findAll();
   }
 
   async findAll(params: getAllParams = {}): Promise<getAlbumsResponse> {
     const res = await this.client.get<getAlbumsResponse>('', { params });
+    return res.data;
+  }
+
+  async findOne(id: string): Promise<Album> {
+    const res = await this.client.get<Album>(id);
 
     return res.data;
   }
 
-  async findOne(id: string): Promise<AlbumDTO> {
-    const res = await this.client.get<AlbumDTO>(id);
-
-    return res.data;
-  }
-
-  async create(createAlbumDto: CreateAlbumDto, jwt: string): Promise<AlbumDTO> {
-    const res = await this.client.post<AlbumDTO>('', createAlbumDto, createAuthHeader(jwt));
+  async create(createAlbumDto: CreateAlbumDto, jwt: string): Promise<Album> {
+    const res = await this.client.post<Album>('', createAlbumDto, createAuthHeader(jwt));
 
     return res.data;
   }

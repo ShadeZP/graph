@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
-import { GenreDTO } from 'src/common/models/interfaces';
 import { updateEntity } from 'src/common/utils/updateEntity';
 import { CreateGenreDto } from './dto/create-genre.dto';
-import { createAuthHeader } from '../common/utils/createAuthHeader'
+import { createAuthHeader } from '../common/utils/createAuthHeader';
 import { UpdateGenreDto } from './dto/update-genre.dto';
+import { Genre } from 'src/graphql.schema';
 
 interface getGenresResponse {
-  items: GenreDTO[],
+  items: Genre[],
   offset: number,
   limit: number,
   total: number,
@@ -33,14 +33,14 @@ export class GenresService {
     return res.data;
   }
 
-  async findOne(id: string): Promise<GenreDTO> {
-    const res = await this.client.get<GenreDTO>(id);
+  async findOne(id: string): Promise<Genre> {
+    const res = await this.client.get<Genre>(id);
 
     return res.data;
   }
 
-  async create(createGenreDto: CreateGenreDto, jwt: string): Promise<GenreDTO> {
-    const res = await this.client.post<GenreDTO>('', createGenreDto, createAuthHeader(jwt));
+  async create(createGenreDto: CreateGenreDto, jwt: string): Promise<Genre> {
+    const res = await this.client.post<Genre>('', createGenreDto, createAuthHeader(jwt));
 
     return res.data;
   }
