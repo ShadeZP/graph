@@ -1,17 +1,19 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { createTextChangeRange } from '@ts-morph/common/lib/typescript';
-import { CreateArtistInput, FilterArtistsInput, UpdateArtistInput } from 'src/graphql.schema';
+import { BandsService } from 'src/bands/bands.service';
+import { Artist, CreateArtistInput, FilterArtistsInput, UpdateArtistInput } from 'src/graphql.schema';
 import { ArtistsService } from './artists.service';
 
 @Resolver('Artist')
 export class ArtistsResolver {
   constructor(
     private artistsService: ArtistsService,
+    private bandsService: BandsService,
   ) {
   }
 
   @Query('artists')
-  artists(
+  async artists(
     @Args('limit') limit: number,
     @Args('offset') offset: number,
     @Args('filters') filters: FilterArtistsInput,
@@ -20,14 +22,14 @@ export class ArtistsResolver {
   }
 
   @Query('artist')
-  artist(
+  async artist(
     @Args('id') id: string
   ) {
     return this.artistsService.findOne(id);
   }
 
   @Mutation('createArtist')
-  createArtist(
+  async createArtist(
     @Args('createArtistInput') createArtistInput: CreateArtistInput,
     @Context() ctx,
   ) {
@@ -39,7 +41,7 @@ export class ArtistsResolver {
   }
 
   @Mutation('updateArtist')
-  updateArtist(
+  async updateArtist(
     @Args('id') id: string,
     @Args('updateArtistInput') updateArtistInput: UpdateArtistInput,
     @Context() ctx,
@@ -52,7 +54,7 @@ export class ArtistsResolver {
   }
 
   @Mutation('deleteArtist')
-  deleteArtist(
+  async deleteArtist(
     @Args('id') id: string,
     @Context() ctx,
   ) {
@@ -61,5 +63,20 @@ export class ArtistsResolver {
     if (!jwt) return null;
 
     return this.artistsService.delete(id, jwt);
+  }
+
+  @Resolver()
+  @ResolveField('bands')
+  async bands(
+    @Parent() artist
+  ) {
+    console.log(artist)
+    const { bands } = artist;
+
+    const res = await Promise.all(bands.map((id) => {
+      return this.bandsService.findOne(id);
+    }))
+
+    return res;
   }
 }

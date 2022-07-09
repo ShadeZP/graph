@@ -3,6 +3,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders } from 'a
 import { createAuthHeader } from '../common/utils/createAuthHeader'
 import { updateEntity } from 'src/common/utils/updateEntity';
 import { Artist, ArtistsPagination, CreateArtistInput, FilterArtistsInput, UpdateArtistInput } from 'src/graphql.schema';
+
 @Injectable()
 export class ArtistsService {
   client: AxiosInstance;
@@ -37,7 +38,7 @@ export class ArtistsService {
     return res.data;
   }
 
-  async create(createArtistInput, jwt: string): Promise<Artist> {
+  async create(createArtistInput: CreateArtistInput, jwt: string): Promise<Artist> {
     const res = await this.client.post<Artist>('', createArtistInput, createAuthHeader(jwt));
 
     return res.data;

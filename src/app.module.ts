@@ -12,6 +12,14 @@ import { GenresModule } from './genres/genres.module';
 import { TracksModule } from './tracks/tracks.module';
 import { ConfigModule } from '@nestjs/config';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import { BandsService } from './bands/bands.service';
+import { ArtistsService } from './artists/artists.service';
+import { FavouritesService } from './favourites/favourites.service';
+import { GenresService } from './genres/genres.service';
+import { TracksService } from './tracks/tracks.service';
+import { UsersService } from './users/users.service';
+import { ArtistsResolver } from './artists/artists.resolver';
+import { BandsResolver } from './bands/bands.resolver';
 
 @Module({
   imports: [
@@ -39,5 +47,15 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
     GenresModule,
     TracksModule,
   ],
+  providers: [
+    BandsService,
+    ArtistsService,
+    FavouritesService,
+    GenresService,
+    TracksService,
+    UsersService,
+    ArtistsResolver,
+    BandsResolver,
+  ]
 })
 export class AppModule { }
