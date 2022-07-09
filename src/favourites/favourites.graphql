@@ -19,7 +19,7 @@ type Favourites {
 }
 
 input AddToFavouritesInput {
-    type: String!
+    type: FavouriteType!
     id: ID!
 }
 
