@@ -2,23 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { createAuthHeader } from '../common/utils/createAuthHeader';
 import axios, { AxiosInstance } from 'axios';
 import { updateEntity } from 'src/common/utils/updateEntity';
-import { Favourites } from 'src/graphql.schema';
-import { AddToFavouritesDto } from './dto/add-to-favourites.dto';
-import { RemoveFromFavouritesDto } from './dto/remove-from-favourites.dto';
+import { AddToFavouritesInput, Favourites, RemoveFromFavouritesInput } from 'src/graphql.schema';
 
-interface getFavouritesResponse {
-  items: Favourites[],
-  offset: number,
-  limit: number,
-  total: number,
-}
 @Injectable()
 export class FavouritesService {
   client: AxiosInstance;
 
   constructor() {
     this.client = axios.create({
-      baseURL: process.env.GENRES_URL,
+      baseURL: process.env.FAVOURITES_URL,
     });
 
     this.client.interceptors.response.use((res) => {
@@ -26,20 +18,20 @@ export class FavouritesService {
     });
   }
 
-  async findAll(): Promise<getFavouritesResponse> {
-    const res = await this.client.get<getFavouritesResponse>('');
-
+  async findAll(jwt: string): Promise<Favourites> {
+    const res = await this.client.get<Favourites>('', createAuthHeader(jwt));
+    console.log('res', res.data)
     return res.data;
   }
 
-  async add(addToFavouritesDto: AddToFavouritesDto, jwt: string): Promise<Favourites> {
-    const res = await this.client.put<Favourites>('/add', addToFavouritesDto, createAuthHeader(jwt));
-
+  async add(addToFavouritesInput: AddToFavouritesInput, jwt: string): Promise<Favourites> {
+    const res = await this.client.put<Favourites>('/add', addToFavouritesInput, createAuthHeader(jwt));
+    console.log(res)
     return res.data;
   }
 
-  async remove(removeFromFavouritesDto: RemoveFromFavouritesDto, jwt: string) {
-    const res = await this.client.put('/remove', removeFromFavouritesDto, createAuthHeader(jwt));
+  async remove(removeFromFavouritesInput: RemoveFromFavouritesInput, jwt: string) {
+    const res = await this.client.put('/remove', removeFromFavouritesInput, createAuthHeader(jwt));
 
     return res.data;
   }

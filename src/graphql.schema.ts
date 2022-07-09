@@ -7,6 +7,13 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export enum FavouriteType {
+    bands = "bands",
+    genres = "genres",
+    artists = "artists",
+    tracks = "tracks"
+}
+
 export class CreateAlbumInput {
     name: string;
     released?: Nullable<number>;
@@ -92,6 +99,16 @@ export class FilterBandsInput {
     website?: Nullable<string>;
 }
 
+export class AddToFavouritesInput {
+    type: FavouriteType;
+    id: string;
+}
+
+export class RemoveFromFavouritesInput {
+    type: FavouriteType;
+    id: string;
+}
+
 export class CreateGenreInput {
     name: string;
     description?: Nullable<string>;
@@ -169,6 +186,8 @@ export abstract class IQuery {
 
     abstract bands(limit: number, offset: number, filters?: Nullable<FilterBandsInput>): Nullable<BandsPagination> | Promise<Nullable<BandsPagination>>;
 
+    abstract favourites(): Nullable<Favourites> | Promise<Nullable<Favourites>>;
+
     abstract genre(id: string): Nullable<Genre> | Promise<Nullable<Genre>>;
 
     abstract genres(limit: number, offset: number, filters?: Nullable<FilterGenresInput>): Nullable<GenresPagination> | Promise<Nullable<GenresPagination>>;
@@ -200,6 +219,14 @@ export abstract class IMutation {
     abstract updateBand(id: string, updateBandInput: UpdateBandInput): Nullable<Band> | Promise<Nullable<Band>>;
 
     abstract deleteBand(id: string): Nullable<Delete> | Promise<Nullable<Delete>>;
+
+    abstract addTrackToFavourites(id: string): Nullable<Favourites> | Promise<Nullable<Favourites>>;
+
+    abstract addBandToFavourites(id: string): Nullable<Favourites> | Promise<Nullable<Favourites>>;
+
+    abstract addArtistToFavourites(id: string): Nullable<Favourites> | Promise<Nullable<Favourites>>;
+
+    abstract addGenreToFavourites(id: string): Nullable<Favourites> | Promise<Nullable<Favourites>>;
 
     abstract createGenre(createGenreInput: CreateGenreInput): Nullable<Genre> | Promise<Nullable<Genre>>;
 

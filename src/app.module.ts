@@ -25,6 +25,7 @@ import { GenresResolver } from './genres/genres.resolver';
 import { TracksResolver } from './tracks/tracks.resolver';
 import { AlbumsService } from './albums/albums.service';
 import { AlbumsResolver } from './albums/albums.resolver';
+import { FavouritesResolver } from './favourites/favourites.resolver';
 
 @Module({
   imports: [
@@ -69,6 +70,8 @@ import { AlbumsResolver } from './albums/albums.resolver';
     TracksResolver,
     AlbumsService,
     AlbumsResolver,
+    FavouritesService,
+    FavouritesResolver,
   ]
 })
 export class AppModule { }

@@ -1,11 +1,13 @@
 import { Args, Context, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { BandsService } from './bands.service';
 import { CreateBandInput, FilterBandsInput, UpdateBandInput } from '../graphql.schema'
+import { GenresService } from 'src/genres/genres.service';
 
-@Resolver('Bands')
+@Resolver('Band')
 export class BandsResolver {
   constructor(
     private bandsService: BandsService,
+    private genresService: GenresService,
   ) { }
 
   @Query('bands')
@@ -59,5 +61,19 @@ export class BandsResolver {
     if (!jwt) return null;
 
     return this.bandsService.delete(id, jwt);
+  }
+
+  @Resolver()
+  @ResolveField('genres')
+  async genres(
+    @Parent() band
+  ) {
+    const { genresIds } = band;
+
+    const res = await Promise.all(genresIds.map((id) => {
+      return this.genresService.findOne(id);
+    }))
+
+    return res;
   }
 }
