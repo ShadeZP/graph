@@ -11,11 +11,14 @@ import { FavouritesModule } from './favourites/favourites.module';
 import { GenresModule } from './genres/genres.module';
 import { TracksModule } from './tracks/tracks.module';
 import { ConfigModule } from '@nestjs/config';
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
       typePaths: ['./**/*.graphql'],
       transformSchema: schema => upperDirectiveTransformer(schema, 'upper'),
       installSubscriptionHandlers: true,
