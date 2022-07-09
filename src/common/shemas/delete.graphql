@@ -1,0 +1,4 @@
+type Delete {
+  acknowledged: Boolean
+  deletedCount: Int
+}
