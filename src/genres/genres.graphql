@@ -1,7 +1,46 @@
+type Query {
+  genre(id: ID!): Genre
+  genres(limit: Int, offset: Int, filters: FilterGenresInput): GenresPagination
+}
+
+type Mutation{
+  createGenre(createGenreInput: CreateGenreInput): Genre
+  updateGenre(id: ID, updateGenreInput: UpdateGenreInput): Genre
+  deleteGenre(id: ID): Delete
+}
+
 type Genre {
     id: ID!
     name: String
     description: String
     country: String
     year: Int
+}
+
+type GenresPagination {
+  items: [Genre]
+  offset: Int
+  limit: Int
+  total: Int
+}
+
+input CreateGenreInput {
+    name: String!
+    description: String
+    country: String
+    year: String
+}
+
+input UpdateGenreInput {
+    name: String
+    description: String
+    country: String
+    year: String
+}
+
+input FilterGenresInput {
+    name: String
+    description: String
+    country: String
+    year: String
 }

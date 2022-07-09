@@ -24,3 +24,19 @@ type User {
 type JWT {
   jwt: String!
 }
+
+input RegisterInput {
+    firstName: String!
+    lastName: String!
+    password: String!
+    email: String!
+    favouriteArtistIds: [ID]
+    favouriteSongsIds: [ID]
+    favouriteBandsIds: [ID]
+    favouriteGenresIds: [ID]
+}
+
+input LoginInput {
+    email: String!
+    password: String!
+}

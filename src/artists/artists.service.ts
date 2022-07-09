@@ -44,8 +44,8 @@ export class ArtistsService {
     return res.data;
   }
 
-  async update(id: string, updateArtistDto: UpdateArtistInput, jwt: string): Promise<Artist> {
-    const res = await this.client.put(id, updateArtistDto, createAuthHeader(jwt));
+  async update(id: string, updateArtistInput: UpdateArtistInput, jwt: string): Promise<Artist> {
+    const res = await this.client.put(id, updateArtistInput, createAuthHeader(jwt));
 
     return res.data;
   }

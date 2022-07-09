@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
 import { updateEntity } from 'src/common/utils/updateEntity';
-import { JWT, User } from '../graphql.schema'
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
+import { JWT, LoginInput, RegisterInput, User } from '../graphql.schema'
 
 @Injectable()
 export class UsersService {
@@ -19,12 +17,12 @@ export class UsersService {
     });
   }
 
-  async login(logtinDto: LoginDto): Promise<JWT> {
-    return (await this.client.post<JWT>('/login', logtinDto)).data
+  async login(loginInput: LoginInput): Promise<JWT> {
+    return (await this.client.post<JWT>('/login', loginInput)).data
   }
 
-  async register(registerDto: RegisterDto): Promise<User> {
-    return (await this.client.post<User>('/register', registerDto)).data
+  async register(registerInput: RegisterInput): Promise<User> {
+    return (await this.client.post<User>('/register', registerInput)).data
   }
 
   async getUserById(id: string): Promise<User> {

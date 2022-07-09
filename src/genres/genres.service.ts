@@ -1,17 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { updateEntity } from 'src/common/utils/updateEntity';
-import { CreateGenreDto } from './dto/create-genre.dto';
 import { createAuthHeader } from '../common/utils/createAuthHeader';
-import { UpdateGenreDto } from './dto/update-genre.dto';
-import { Genre } from 'src/graphql.schema';
-
-interface getGenresResponse {
-  items: Genre[],
-  offset: number,
-  limit: number,
-  total: number,
-}
+import { CreateGenreInput, FilterGenresInput, Genre, GenresPagination, UpdateGenreInput } from 'src/graphql.schema';
 
 @Injectable()
 export class GenresService {
@@ -27,8 +18,16 @@ export class GenresService {
     });
   }
 
-  async findAll(): Promise<getGenresResponse> {
-    const res = await this.client.get<getGenresResponse>('');
+  async findAll(limit: number, offset: number, filters?: FilterGenresInput): Promise<GenresPagination> {
+    const config: AxiosRequestConfig = {
+      params: {
+        limit,
+        offset,
+        ...filters,
+      }
+    }
+
+    const res = await this.client.get<GenresPagination>('/', config);
 
     return res.data;
   }
@@ -39,20 +38,20 @@ export class GenresService {
     return res.data;
   }
 
-  async create(createGenreDto: CreateGenreDto, jwt: string): Promise<Genre> {
-    const res = await this.client.post<Genre>('', createGenreDto, createAuthHeader(jwt));
+  async create(createGenreInput: CreateGenreInput, jwt: string): Promise<Genre> {
+    const res = await this.client.post<Genre>('', createGenreInput, createAuthHeader(jwt));
 
     return res.data;
   }
 
-  async update(id: string, updateGenreDto: UpdateGenreDto, jwt: string) {
-    const res = await this.client.put(id, updateGenreDto, createAuthHeader(jwt));
+  async update(id: string, updateGenreInput: UpdateGenreInput, jwt: string) {
+    const res = await this.client.put(id, updateGenreInput, createAuthHeader(jwt));
 
     return res.data;
   }
 
-  async delete(jwt: string) {
-    const res = await this.client.delete('', createAuthHeader(jwt));
+  async delete(id: string, jwt: string) {
+    const res = await this.client.delete(`/${id}`, createAuthHeader(jwt));
 
     return res.data;
   }
